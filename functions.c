@@ -69,6 +69,19 @@ void insertAtPosition(List *head, int pos, Student student)
     printf("Student inserted at position %d successfully.\n", pos);
 }
 
+// Returns 1 if a student with the given ID already exists in the list, 0 otherwise
+int isDuplicateId(List head, int id)
+{
+    Node *walker = head;
+    while (walker != NULL)
+    {
+        if (walker->data.id == id)
+            return 1;
+        walker = walker->next;
+    }
+    return 0;
+}
+
 void insertAtStart(List *head, Student student)
 {
     insertAtPosition(head, 1, student);
@@ -139,10 +152,11 @@ void searchByStudentId(List head, int id)
     Node *walker = head;
     while (walker != NULL)
     {
-        int studentId = walker->data.id;
-        if (studentId == id)
+        if (walker->data.id == id)
         {
+            printHeader();
             printStudentInfo(walker->data);
+            printf("+-----+--------------------+----------+-------+------+\n");
             return;
         }
 
@@ -185,6 +199,8 @@ void promoteYearLevel(List *head)
         current = current->next;
         promoted++;
     }
+
+    printf("Students promoted: %d | Students graduated/removed: %d\n", promoted, removed);
 }
 
 // Computes and displays the average GPA of all students in the linked list
@@ -237,8 +253,10 @@ void displayTopNStudents(List head, int n)
             }
 
     printf("Top %d students by GPA:\n", n);
+    printHeader();
     for (i = 0; i < n && i < index; i++)
         printStudentInfo(nodes[i]->data);
+    printf("+-----+--------------------+----------+-------+------+\n");
 }
 
 void reverseList(List *head)

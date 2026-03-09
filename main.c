@@ -22,11 +22,6 @@ void displayMenu()
 	printf("14. Fill List with Sample Data\n");
 }
 
-void regularEnrollment(List head, Student student)
-{
-	insertAtEnd(&head, student);
-}
-
 Student createStudent()
 {
 	Student student;
@@ -43,13 +38,23 @@ Student createStudent()
 	scanf(" %99[^\n]", student.program);
 	fflush(stdin);
 
-	printf("Enter student year level: ");
-	scanf("%d", &student.yearLevel);
-	fflush(stdin);
+	do
+	{
+		printf("Enter student year level (1-5): ");
+		scanf("%d", &student.yearLevel);
+		fflush(stdin);
+		if (student.yearLevel < 1 || student.yearLevel > 5)
+			printf("Invalid year level. Must be between 1 and 5.\n");
+	} while (student.yearLevel < 1 || student.yearLevel > 5);
 
-	printf("Enter student GPA: ");
-	scanf("%f", &student.gpa);
-	fflush(stdin);
+	do
+	{
+		printf("Enter student GPA (0.0 - 4.0): ");
+		scanf("%f", &student.gpa);
+		fflush(stdin);
+		if (student.gpa < 0.0f || student.gpa > 4.0f)
+			printf("Invalid GPA. Must be between 0.0 and 4.0.\n");
+	} while (student.gpa < 0.0f || student.gpa > 4.0f);
 
 	return student;
 }
@@ -76,6 +81,11 @@ int main(int argc, char *argv[])
 		case 1:
 		{
 			Student student = createStudent();
+			if (isDuplicateId(list, student.id))
+			{
+				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				break;
+			}
 			insertAtEnd(&list, student);
 		}
 		break;
@@ -83,13 +93,16 @@ int main(int argc, char *argv[])
 		case 2:
 		{
 			Student student = createStudent();
-
-			if (!(student.gpa >= 3.0))
+			if (isDuplicateId(list, student.id))
+			{
+				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				break;
+			}
+			if (student.gpa < 3.0f)
 			{
 				printf("Student does not meet the GPA requirement for priority enrollment.\n");
 				break;
 			}
-
 			insertAtStart(&list, student);
 		}
 		break;
@@ -97,11 +110,14 @@ int main(int argc, char *argv[])
 		case 3:
 		{
 			Student student = createStudent();
-
+			if (isDuplicateId(list, student.id))
+			{
+				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				break;
+			}
 			int pos;
 			printf("Enter position to insert (1-based index): ");
 			scanf("%d", &pos);
-
 			insertAtPosition(&list, pos, student);
 		}
 		break;
@@ -133,7 +149,6 @@ int main(int argc, char *argv[])
 		case 9:
 		{
 			promoteYearLevel(&list);
-			printf("All students promoted to the next year level. Graduated students removed.\n");
 		}
 		break;
 
@@ -152,6 +167,7 @@ int main(int argc, char *argv[])
 
 			displayTopNStudents(list, n);
 		}
+		break;
 
 		case 12:
 		{
