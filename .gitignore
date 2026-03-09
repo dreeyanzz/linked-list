@@ -1,0 +1,7 @@
+# Compiled output
+*.exe
+*.o
+
+# Dev-C++ IDE files
+*.layout
+*.dev
