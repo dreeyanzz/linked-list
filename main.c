@@ -122,6 +122,18 @@ int main(int argc, char *argv[])
 		}
 		break;
 
+		case 4:
+		{
+			Student student = createStudent();
+			if (isDuplicateId(list, student.id))
+			{
+				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				break;
+			}
+			insertByGpa(&list, student);
+		}
+		break;
+
 		case 5:
 		{
 			displayAllStudents(list);

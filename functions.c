@@ -82,6 +82,26 @@ int isDuplicateId(List head, int id)
     return 0;
 }
 
+// Inserts a student in descending GPA order (before the first student with a lower GPA)
+void insertByGpa(List *head, Student student)
+{
+    Node *newNode = createNode(student);
+
+    if (*head == NULL || student.gpa > (*head)->data.gpa)
+    {
+        newNode->next = *head;
+        *head = newNode;
+        return;
+    }
+
+    Node *walker = *head;
+    while (walker->next != NULL && walker->next->data.gpa >= student.gpa)
+        walker = walker->next;
+
+    newNode->next = walker->next;
+    walker->next = newNode;
+}
+
 void insertAtStart(List *head, Student student)
 {
     insertAtPosition(head, 1, student);
