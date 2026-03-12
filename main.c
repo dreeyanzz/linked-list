@@ -18,11 +18,11 @@ void displayMenu()
 	printf("10. Compute Average GPA\n");
 	printf("11. Display Top N Students\n");
 	printf("12. Reverse List\n");
-	printf("13. Exit\n");
-	printf("14. Fill List with Sample Data\n");
-	printf("15. Delete Students with GPA Below Threshold\n");
-	printf("16. Delete Students by Year Level\n");
-	printf("17. Delete Duplicate GPA Records\n");
+	printf("13. Delete Students with GPA Below Threshold\n");
+	printf("14. Delete Students by Year Level\n");
+	printf("15. Delete Duplicate GPA Records\n");
+	printf("16. Fill List with Sample Data\n");
+	printf("17. Exit\n");
 }
 
 Student createStudent()
@@ -200,18 +200,6 @@ int main()
 
 		case 13:
 		{
-			exit(0);
-		}
-		break;
-
-		case 14:
-		{
-			list = fillList(list);
-		}
-		break;
-
-		case 15:
-		{
 			float threshold;
 			printf("Enter GPA threshold (students below this value will be deleted): ");
 			scanf("%f", &threshold);
@@ -220,7 +208,7 @@ int main()
 		}
 		break;
 
-		case 16:
+		case 14:
 		{
 			int yearLevel;
 			printf("Enter year level to delete: ");
@@ -230,9 +218,21 @@ int main()
 		}
 		break;
 
-		case 17:
+		case 15:
 		{
 			list = deleteDuplicateGpa(list);
+		}
+		break;
+
+		case 16:
+		{
+			list = fillList(list);
+		}
+		break;
+
+		case 17:
+		{
+			exit(0);
 		}
 		break;
 

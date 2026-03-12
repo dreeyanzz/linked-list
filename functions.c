@@ -209,6 +209,7 @@ List promoteYearLevel(List head)
 
             NodePtr temp = current;
             current = current->next;
+            temp->next = NULL;
             free(temp);
             removed++;
 
@@ -322,6 +323,7 @@ List deleteByStudentId(List head, int id)
                 prev->next = current->next;
 
             printf("Student with ID %d (%s) deleted successfully.\n", current->data.id, current->data.name);
+            current->next = NULL;
             free(current);
             return head;
         }
@@ -358,6 +360,7 @@ List deleteByGpaBelow(List head, float threshold)
                 prev->next = current->next;
 
             current = current->next;
+            temp->next = NULL;
             free(temp);
             removed++;
         }
@@ -397,6 +400,7 @@ List deleteByYearLevel(List head, int yearLevel)
                 prev->next = current->next;
 
             current = current->next;
+            temp->next = NULL;
             free(temp);
             removed++;
         }
@@ -436,6 +440,7 @@ List deleteDuplicateGpa(List head)
                 NodePtr temp = inner;
                 prev->next = inner->next;
                 inner = inner->next;
+                temp->next = NULL;
                 free(temp);
                 removed++;
             }
