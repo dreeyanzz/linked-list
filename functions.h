@@ -2,27 +2,27 @@
 #define functions_h
 #include "struct.h"
 
-Node *createNode(Student student);
+NodePtr createNode(Student student);
 int countStudents(List head);
 int isDuplicateId(List head, int id);
-void insertAtPosition(List *head, int pos, Student student);
-void insertByGpa(List *head, Student student);
-void insertAtStart(List *head, Student student);
-void insertAtEnd(List *head, Student student);
-Node *getNodeAtPosition(List head, int pos);
+List insertAtPosition(List head, int pos, Student student);
+List insertByGpa(List head, Student student);
+List insertAtStart(List head, Student student);
+List insertAtEnd(List head, Student student);
+NodePtr getNodeAtPosition(List head, int pos);
 void printStudentInfo(Student student);
 void displayAllStudents(List head);
 void searchByStudentId(List head, int id);
-void promoteYearLevel(List *head);
+List promoteYearLevel(List head);
 void computeAverageGpa(List head);
 void displayTopNStudents(List head, int n);
-void reverseList(List *head);
+List reverseList(List head);
 
-void deleteByStudentId(List *head, int id);
-void deleteByGpaBelow(List *head, float threshold);
-void deleteByYearLevel(List *head, int yearLevel);
-void deleteDuplicateGpa(List *head);
+List deleteByStudentId(List head, int id);
+List deleteByGpaBelow(List head, float threshold);
+List deleteByYearLevel(List head, int yearLevel);
+List deleteDuplicateGpa(List head);
 
-void fillList(List *head);
+List fillList(List head);
 
 #endif

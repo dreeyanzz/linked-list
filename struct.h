@@ -16,7 +16,7 @@ typedef struct Node
 	struct Node *next;
 } Node;
 
-typedef Node *List;
 typedef Node *NodePtr;
+typedef NodePtr List;
 
 #endif

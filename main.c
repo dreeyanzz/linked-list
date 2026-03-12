@@ -62,11 +62,8 @@ Student createStudent()
 	return student;
 }
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-
-int main(int argc, char *argv[])
+int main()
 {
-
 	List list = NULL;
 
 	int choice;
@@ -89,7 +86,7 @@ int main(int argc, char *argv[])
 				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
 				break;
 			}
-			insertAtEnd(&list, student);
+			list = insertAtEnd(list, student);
 		}
 		break;
 
@@ -106,7 +103,7 @@ int main(int argc, char *argv[])
 				printf("Student does not meet the GPA requirement for priority enrollment.\n");
 				break;
 			}
-			insertAtStart(&list, student);
+			list = insertAtStart(list, student);
 		}
 		break;
 
@@ -121,7 +118,7 @@ int main(int argc, char *argv[])
 			int pos;
 			printf("Enter position to insert (1-based index): ");
 			scanf("%d", &pos);
-			insertAtPosition(&list, pos, student);
+			list = insertAtPosition(list, pos, student);
 		}
 		break;
 
@@ -133,7 +130,7 @@ int main(int argc, char *argv[])
 				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
 				break;
 			}
-			insertByGpa(&list, student);
+			list = insertByGpa(list, student);
 		}
 		break;
 
@@ -160,7 +157,7 @@ int main(int argc, char *argv[])
 			printf("Enter student ID to delete: ");
 			scanf("%d", &id);
 			fflush(stdin);
-			deleteByStudentId(&list, id);
+			list = deleteByStudentId(list, id);
 		}
 		break;
 
@@ -173,7 +170,7 @@ int main(int argc, char *argv[])
 
 		case 9:
 		{
-			promoteYearLevel(&list);
+			list = promoteYearLevel(list);
 		}
 		break;
 
@@ -196,7 +193,7 @@ int main(int argc, char *argv[])
 
 		case 12:
 		{
-			reverseList(&list);
+			list = reverseList(list);
 			printf("Student list reversed.\n");
 		}
 		break;
@@ -209,7 +206,7 @@ int main(int argc, char *argv[])
 
 		case 14:
 		{
-			fillList(&list);
+			list = fillList(list);
 		}
 		break;
 
@@ -219,7 +216,7 @@ int main(int argc, char *argv[])
 			printf("Enter GPA threshold (students below this value will be deleted): ");
 			scanf("%f", &threshold);
 			fflush(stdin);
-			deleteByGpaBelow(&list, threshold);
+			list = deleteByGpaBelow(list, threshold);
 		}
 		break;
 
@@ -229,13 +226,13 @@ int main(int argc, char *argv[])
 			printf("Enter year level to delete: ");
 			scanf("%d", &yearLevel);
 			fflush(stdin);
-			deleteByYearLevel(&list, yearLevel);
+			list = deleteByYearLevel(list, yearLevel);
 		}
 		break;
 
 		case 17:
 		{
-			deleteDuplicateGpa(&list);
+			list = deleteDuplicateGpa(list);
 		}
 		break;
 
