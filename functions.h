@@ -12,7 +12,7 @@ List insertAtEnd(List head, Student student);
 NodePtr getNodeAtPosition(List head, int pos);
 void printStudentInfo(Student student);
 void displayAllStudents(List head);
-void searchByStudentId(List head, int id);
+int searchByStudentId(List head, int id);
 List promoteYearLevel(List head);
 void computeAverageGpa(List head);
 void displayTopNStudents(List head, int n);

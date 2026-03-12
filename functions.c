@@ -168,7 +168,7 @@ void displayAllStudents(List head)
 
 // Searches for a student by their ID and displays their information if found
 // If no student with the given ID is found, it displays a not found message
-void searchByStudentId(List head, int id)
+int searchByStudentId(List head, int id)
 {
     NodePtr walker = head;
     while (walker != NULL)
@@ -178,13 +178,14 @@ void searchByStudentId(List head, int id)
             printHeader();
             printStudentInfo(walker->data);
             printf("+-----+--------------------+----------+-------+------+\n");
-            return;
+            return id;
         }
 
         walker = walker->next;
     }
 
     printf("Student with ID %d not found.\n", id);
+    return 0;
 }
 
 // Promotes the year level of all students by 1
@@ -291,10 +292,10 @@ List reverseList(List head)
 
     while (current != NULL)
     {
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
+        next = current->next; // Store next node
+        current->next = prev; // Reverse current node's pointer
+        prev = current;       // Move prev to current node
+        current = next;       // Move to next node
     }
 
     return prev;
@@ -323,8 +324,10 @@ List deleteByStudentId(List head, int id)
                 prev->next = current->next;
 
             printf("Student with ID %d (%s) deleted successfully.\n", current->data.id, current->data.name);
+
             current->next = NULL;
             free(current);
+
             return head;
         }
         prev = current;
@@ -360,15 +363,16 @@ List deleteByGpaBelow(List head, float threshold)
                 prev->next = current->next;
 
             current = current->next;
+
             temp->next = NULL;
             free(temp);
+
             removed++;
+            continue;
         }
-        else
-        {
-            prev = current;
-            current = current->next;
-        }
+
+        prev = current;
+        current = current->next;
     }
 
     printf("Students with GPA below %.2f removed: %d\n", threshold, removed);
@@ -376,7 +380,7 @@ List deleteByGpaBelow(List head, float threshold)
 }
 
 // Removes all students belonging to the given year level
-// Returns the (possibly new) head of the list
+// Returns the (could be new) head of the list
 List deleteByYearLevel(List head, int yearLevel)
 {
     if (head == NULL)
@@ -400,15 +404,16 @@ List deleteByYearLevel(List head, int yearLevel)
                 prev->next = current->next;
 
             current = current->next;
+
             temp->next = NULL;
             free(temp);
+
             removed++;
+            continue;
         }
-        else
-        {
-            prev = current;
-            current = current->next;
-        }
+
+        prev = current;
+        current = current->next;
     }
 
     printf("Students in Year Level %d removed: %d\n", yearLevel, removed);
@@ -438,17 +443,20 @@ List deleteDuplicateGpa(List head)
             if (inner->data.gpa == outer->data.gpa)
             {
                 NodePtr temp = inner;
-                prev->next = inner->next;
+
+                prev->next = inner->next; // Bypass duplicate node
+
                 inner = inner->next;
+
                 temp->next = NULL;
                 free(temp);
+
                 removed++;
+                continue;
             }
-            else
-            {
-                prev = inner;
-                inner = inner->next;
-            }
+
+            prev = inner;
+            inner = inner->next;
         }
 
         outer = outer->next;

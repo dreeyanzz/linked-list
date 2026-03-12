@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gcc -Wall -o linked-list-test main.c functions.c struct.c)",
+      "Bash(GCC=\"/c/Program Files \\(x86\\)/Dev-Cpp/MinGW64/bin/gcc.exe\")",
+      "Bash(\"$GCC\" -Wall -o linked-list-test main.c functions.c struct.c)",
+      "Bash(\"$GCC\" -Wall -o test_runner test_new_functions.c functions.c struct.c)",
+      "Bash(./test_runner.exe)",
+      "Bash(\"$GCC\" -Wall -o linked-list main.c functions.c struct.c)",
+      "Bash(\"$GCC\" -Wall -o test_runner test.c functions.c struct.c)"
+    ]
+  }
+}
