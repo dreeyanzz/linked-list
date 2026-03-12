@@ -35,7 +35,7 @@ List insertAtPosition(List head, int pos, Student student)
 {
     if (pos < 1)
     {
-        printf("Position %d is not reachable. Student not inserted.\n", pos);
+        printf("[!!] Position %d is not reachable. Student not inserted.\n", pos);
         return head;
     }
 
@@ -46,7 +46,7 @@ List insertAtPosition(List head, int pos, Student student)
     {
         newNode->next = head;
         head = newNode;
-        printf("Student inserted at position %d successfully.\n", pos);
+        printf("[OK] Student inserted at position %d.\n", pos);
         return head;
     }
 
@@ -57,7 +57,7 @@ List insertAtPosition(List head, int pos, Student student)
 
     if (walker == NULL)
     {
-        printf("Position %d is not reachable. Student not inserted.\n", pos);
+        printf("[!!] Position %d is not reachable. Student not inserted.\n", pos);
         free(newNode);
         return head;
     }
@@ -65,7 +65,7 @@ List insertAtPosition(List head, int pos, Student student)
     newNode->next = walker->next;
     walker->next = newNode;
 
-    printf("Student inserted at position %d successfully.\n", pos);
+    printf("[OK] Student inserted at position %d.\n", pos);
     return head;
 }
 
@@ -129,15 +129,21 @@ NodePtr getNodeAtPosition(List head, int pos)
 
 void printHeader()
 {
-    printf("+-----+--------------------+----------+-------+------+\n");
-    printf("| ID  | Name               | Program  | Year  | GPA  |\n");
-    printf("+-----+--------------------+----------+-------+------+\n");
+    printf("+----+-----+--------------------+----------+-------+------+\n");
+    printf("|  # | ID  | Name               | Program  | Year  | GPA  |\n");
+    printf("+----+-----+--------------------+----------+-------+------+\n");
 }
 
-// Displays the infos of a student in a formatted manner
-void printStudentInfo(Student student)
+void printFooter()
 {
-    printf("| %-3d | %-18s | %-8s | %-5d | %-4.2f |\n",
+    printf("+----+-----+--------------------+----------+-------+------+\n");
+}
+
+// Displays the info of a student in a formatted table row
+void printStudentInfo(int row, Student student)
+{
+    printf("| %2d | %-3d | %-18s | %-8s | %-5d | %-4.2f |\n",
+           row,
            student.id,
            student.name,
            student.program,
@@ -150,20 +156,22 @@ void displayAllStudents(List head)
 {
     if (head == NULL)
     {
-        printf("No students to display.\n");
+        printf("[--] No students to display.\n");
         return;
     }
 
+    printf("[--] Total students: %d\n", countStudents(head));
     printHeader();
 
     NodePtr walker = head;
+    int row = 1;
     while (walker != NULL)
     {
-        printStudentInfo(walker->data);
+        printStudentInfo(row++, walker->data);
         walker = walker->next;
     }
 
-    printf("+-----+--------------------+----------+-------+------+\n");
+    printFooter();
 }
 
 // Searches for a student by their ID and displays their information if found
@@ -176,15 +184,15 @@ int searchByStudentId(List head, int id)
         if (walker->data.id == id)
         {
             printHeader();
-            printStudentInfo(walker->data);
-            printf("+-----+--------------------+----------+-------+------+\n");
+            printStudentInfo(1, walker->data);
+            printFooter();
             return id;
         }
 
         walker = walker->next;
     }
 
-    printf("Student with ID %d not found.\n", id);
+    printf("[!!] Student with ID %d not found.\n", id);
     return 0;
 }
 
@@ -223,7 +231,7 @@ List promoteYearLevel(List head)
         promoted++;
     }
 
-    printf("Students promoted: %d | Students graduated/removed: %d\n", promoted, removed);
+    printf("[OK] Promoted: %d student(s)  |  Graduated/Removed: %d student(s)\n", promoted, removed);
     return head;
 }
 
@@ -243,12 +251,12 @@ void computeAverageGpa(List head)
 
     if (count == 0)
     {
-        printf("No students in the list to compute average GPA.\n");
+        printf("[--] No students in the list.\n");
         return;
     }
 
     float averageGpa = totalGpa / count;
-    printf("Average GPA of all students: %.2f\n", averageGpa);
+    printf("[--] Average GPA: %.2f  (%d student(s))\n", averageGpa, count);
 }
 
 // Displays the top N students based on their GPA in descending order
@@ -276,11 +284,11 @@ void displayTopNStudents(List head, int n)
                 nodes[j + 1] = temp;
             }
 
-    printf("Top %d students by GPA:\n", n);
+    printf("[--] Top %d student(s) by GPA:\n", n < index ? n : index);
     printHeader();
     for (i = 0; i < n && i < index; i++)
-        printStudentInfo(nodes[i]->data);
-    printf("+-----+--------------------+----------+-------+------+\n");
+        printStudentInfo(i + 1, nodes[i]->data);
+    printFooter();
 }
 
 // Reverses the linked list and returns the new head
@@ -307,7 +315,7 @@ List deleteByStudentId(List head, int id)
 {
     if (head == NULL)
     {
-        printf("List is empty. No student to delete.\n");
+        printf("[--] List is empty. No student to delete.\n");
         return head;
     }
 
@@ -323,7 +331,7 @@ List deleteByStudentId(List head, int id)
             else
                 prev->next = current->next;
 
-            printf("Student with ID %d (%s) deleted successfully.\n", current->data.id, current->data.name);
+            printf("[OK] Deleted: %s (ID: %d)\n", current->data.name, current->data.id);
 
             current->next = NULL;
             free(current);
@@ -334,7 +342,7 @@ List deleteByStudentId(List head, int id)
         current = current->next;
     }
 
-    printf("Student with ID %d not found.\n", id);
+    printf("[!!] Student with ID %d not found.\n", id);
     return head;
 }
 
@@ -344,7 +352,7 @@ List deleteByGpaBelow(List head, float threshold)
 {
     if (head == NULL)
     {
-        printf("List is empty.\n");
+        printf("[--] List is empty.\n");
         return head;
     }
 
@@ -375,7 +383,7 @@ List deleteByGpaBelow(List head, float threshold)
         current = current->next;
     }
 
-    printf("Students with GPA below %.2f removed: %d\n", threshold, removed);
+    printf("[OK] Removed %d student(s) with GPA below %.2f\n", removed, threshold);
     return head;
 }
 
@@ -385,7 +393,7 @@ List deleteByYearLevel(List head, int yearLevel)
 {
     if (head == NULL)
     {
-        printf("List is empty.\n");
+        printf("[--] List is empty.\n");
         return head;
     }
 
@@ -416,7 +424,7 @@ List deleteByYearLevel(List head, int yearLevel)
         current = current->next;
     }
 
-    printf("Students in Year Level %d removed: %d\n", yearLevel, removed);
+    printf("[OK] Removed %d Year %d student(s)\n", removed, yearLevel);
     return head;
 }
 
@@ -426,7 +434,7 @@ List deleteDuplicateGpa(List head)
 {
     if (head == NULL)
     {
-        printf("List is empty.\n");
+        printf("[--] List is empty.\n");
         return head;
     }
 
@@ -462,7 +470,7 @@ List deleteDuplicateGpa(List head)
         outer = outer->next;
     }
 
-    printf("Duplicate GPA records removed: %d\n", removed);
+    printf("[OK] Removed %d duplicate GPA record(s)\n", removed);
     return head;
 }
 

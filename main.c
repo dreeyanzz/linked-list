@@ -3,6 +3,13 @@
 #include "struct.h"
 #include "functions.h"
 
+void pause()
+{
+	printf("\nPress ENTER to continue...");
+	fflush(stdin);
+	getchar();
+}
+
 void displayMenu()
 {
 	printf("===== SMART ENROLLMENT SYSTEM =====\n");
@@ -29,34 +36,34 @@ Student createStudent()
 {
 	Student student;
 
-	printf("Enter student ID: ");
+	printf("  ID       : ");
 	scanf("%d", &student.id);
 	fflush(stdin);
 
-	printf("Enter student name: ");
+	printf("  Name     : ");
 	scanf(" %99[^\n]", student.name);
 	fflush(stdin);
 
-	printf("Enter student program: ");
+	printf("  Program  : ");
 	scanf(" %99[^\n]", student.program);
 	fflush(stdin);
 
 	do
 	{
-		printf("Enter student year level (1-5): ");
+		printf("  Year (1-5): ");
 		scanf("%d", &student.yearLevel);
 		fflush(stdin);
 		if (student.yearLevel < 1 || student.yearLevel > 5)
-			printf("Invalid year level. Must be between 1 and 5.\n");
+			printf("  [!!] Invalid year level. Must be between 1 and 5.\n");
 	} while (student.yearLevel < 1 || student.yearLevel > 5);
 
 	do
 	{
-		printf("Enter student GPA (0.0 - 4.0): ");
+		printf("  GPA (0.0-4.0): ");
 		scanf("%f", &student.gpa);
 		fflush(stdin);
 		if (student.gpa < 0.0f || student.gpa > 4.0f)
-			printf("Invalid GPA. Must be between 0.0 and 4.0.\n");
+			printf("  [!!] Invalid GPA. Must be between 0.0 and 4.0.\n");
 	} while (student.gpa < 0.0f || student.gpa > 4.0f);
 
 	return student;
@@ -70,10 +77,11 @@ int main()
 
 	while (1)
 	{
-		printf("\n\n");
+		system("cls");
 		displayMenu();
-		printf("Enter your choice: ");
+		printf("Choice: ");
 		scanf("%d", &choice);
+		fflush(stdin);
 
 		switch (choice)
 		{
@@ -83,10 +91,12 @@ int main()
 			Student student = createStudent();
 			if (isDuplicateId(list, student.id))
 			{
-				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				printf("[!!] ID %d already exists. Enrollment rejected.\n", student.id);
+				pause();
 				break;
 			}
 			list = insertAtEnd(list, student);
+			pause();
 		}
 		break;
 
@@ -95,15 +105,18 @@ int main()
 			Student student = createStudent();
 			if (isDuplicateId(list, student.id))
 			{
-				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				printf("[!!] ID %d already exists. Enrollment rejected.\n", student.id);
+				pause();
 				break;
 			}
 			if (student.gpa < 3.0f)
 			{
-				printf("Student does not meet the GPA requirement for priority enrollment.\n");
+				printf("[!!] GPA %.2f does not meet the 3.0 minimum for priority enrollment.\n", student.gpa);
+				pause();
 				break;
 			}
 			list = insertAtStart(list, student);
+			pause();
 		}
 		break;
 
@@ -112,13 +125,16 @@ int main()
 			Student student = createStudent();
 			if (isDuplicateId(list, student.id))
 			{
-				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				printf("[!!] ID %d already exists. Enrollment rejected.\n", student.id);
+				pause();
 				break;
 			}
 			int pos;
-			printf("Enter position to insert (1-based index): ");
+			printf("  Position (1-based): ");
 			scanf("%d", &pos);
+			fflush(stdin);
 			list = insertAtPosition(list, pos, student);
+			pause();
 		}
 		break;
 
@@ -127,122 +143,136 @@ int main()
 			Student student = createStudent();
 			if (isDuplicateId(list, student.id))
 			{
-				printf("Student with ID %d already exists. Enrollment rejected.\n", student.id);
+				printf("[!!] ID %d already exists. Enrollment rejected.\n", student.id);
+				pause();
 				break;
 			}
 			list = insertByGpa(list, student);
+			printf("[OK] Student enrolled by GPA order.\n");
+			pause();
 		}
 		break;
 
 		case 5:
 		{
 			displayAllStudents(list);
+			pause();
 		}
 		break;
 
 		case 6:
 		{
 			int id;
-			printf("Enter student ID to search: ");
+			printf("  Student ID to search: ");
 			scanf("%d", &id);
 			fflush(stdin);
 
 			int result = searchByStudentId(list, id);
 			if (result)
-				printf("Student ID %d found.\n", result);
-			else
-				printf("Student ID %d does not exist.\n", id);
+				printf("[OK] Match found for ID %d.\n", result);
+			pause();
 		}
 		break;
 
 		case 7:
 		{
 			int id;
-			printf("Enter student ID to delete: ");
+			printf("  Student ID to delete: ");
 			scanf("%d", &id);
 			fflush(stdin);
 			list = deleteByStudentId(list, id);
+			pause();
 		}
 		break;
 
 		case 8:
 		{
 			int count = countStudents(list);
-			printf("Total number of students: %d\n", count);
+			printf("[--] Total students: %d\n", count);
+			pause();
 		}
 		break;
 
 		case 9:
 		{
 			list = promoteYearLevel(list);
+			pause();
 		}
 		break;
 
 		case 10:
 		{
 			computeAverageGpa(list);
+			pause();
 		}
 		break;
 
 		case 11:
 		{
 			int n;
-			printf("Enter the number of top students to display: ");
+			printf("  Top N students to display: ");
 			scanf("%d", &n);
 			fflush(stdin);
-
 			displayTopNStudents(list, n);
+			pause();
 		}
 		break;
 
 		case 12:
 		{
 			list = reverseList(list);
-			printf("Student list reversed.\n");
+			printf("[OK] List order reversed.\n");
+			pause();
 		}
 		break;
 
 		case 13:
 		{
 			float threshold;
-			printf("Enter GPA threshold (students below this value will be deleted): ");
+			printf("  GPA threshold (removes all below): ");
 			scanf("%f", &threshold);
 			fflush(stdin);
 			list = deleteByGpaBelow(list, threshold);
+			pause();
 		}
 		break;
 
 		case 14:
 		{
 			int yearLevel;
-			printf("Enter year level to delete: ");
+			printf("  Year level to delete: ");
 			scanf("%d", &yearLevel);
 			fflush(stdin);
 			list = deleteByYearLevel(list, yearLevel);
+			pause();
 		}
 		break;
 
 		case 15:
 		{
 			list = deleteDuplicateGpa(list);
+			pause();
 		}
 		break;
 
 		case 16:
 		{
 			list = fillList(list);
+			pause();
 		}
 		break;
 
 		case 17:
 		{
+			printf("[--] Goodbye!\n");
 			exit(0);
 		}
 		break;
 
 		default:
 		{
-			printf("Invalid choice or not yet implemented. Please try again.\n");
+			printf("[!!] Invalid choice. Please try again.\n");
+			pause();
 		}
 		break;
 		}
