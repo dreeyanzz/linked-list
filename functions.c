@@ -4,9 +4,9 @@
 
 // Creates a new node with given student data
 // Allocates memory for a new node, assigns the student data to it, and initializes the next pointer to NULL
-Node *createNode(Student student)
+NodePtr createNode(Student student)
 {
-    Node *newNode = (Node *)malloc(sizeof(Node));
+    NodePtr newNode = (NodePtr)malloc(sizeof(Node));
     newNode->data = student;
     newNode->next = NULL;
     return newNode;
@@ -20,7 +20,7 @@ int countStudents(List head)
         return 0;
 
     int count = 0;
-    Node *walker = head;
+    NodePtr walker = head;
     while (walker != NULL)
     {
         count++;
@@ -40,7 +40,7 @@ void insertAtPosition(List *head, int pos, Student student)
         return;
     }
 
-    Node *newNode = createNode(student);
+    NodePtr newNode = createNode(student);
 
     // Insert at head
     if (pos == 1)
@@ -51,7 +51,7 @@ void insertAtPosition(List *head, int pos, Student student)
         return;
     }
 
-    Node *walker = *head;
+    NodePtr walker = *head;
     int currentPos;
     for (currentPos = 1; currentPos < pos - 1 && walker != NULL; currentPos++)
         walker = walker->next;
@@ -72,7 +72,7 @@ void insertAtPosition(List *head, int pos, Student student)
 // Returns 1 if a student with the given ID already exists in the list, 0 otherwise
 int isDuplicateId(List head, int id)
 {
-    Node *walker = head;
+    NodePtr walker = head;
     while (walker != NULL)
     {
         if (walker->data.id == id)
@@ -85,7 +85,7 @@ int isDuplicateId(List head, int id)
 // Inserts a student in descending GPA order (before the first student with a lower GPA)
 void insertByGpa(List *head, Student student)
 {
-    Node *newNode = createNode(student);
+    NodePtr newNode = createNode(student);
 
     if (*head == NULL || student.gpa > (*head)->data.gpa)
     {
@@ -94,7 +94,7 @@ void insertByGpa(List *head, Student student)
         return;
     }
 
-    Node *walker = *head;
+    NodePtr walker = *head;
     while (walker->next != NULL && walker->next->data.gpa >= student.gpa)
         walker = walker->next;
 
@@ -114,10 +114,10 @@ void insertAtEnd(List *head, Student student)
 
 // Returns the node at the specified position in the linked list
 // Returns NULL if the position is not reachable
-Node *getNodeAtPosition(List head, int pos)
+NodePtr getNodeAtPosition(List head, int pos)
 {
     int currentPos = 1;
-    Node *walker = head;
+    NodePtr walker = head;
     while (walker != NULL && currentPos < pos)
     {
         walker = walker->next;
@@ -155,7 +155,7 @@ void displayAllStudents(List head)
 
     printHeader();
 
-    Node *walker = head;
+    NodePtr walker = head;
     while (walker != NULL)
     {
         printStudentInfo(walker->data);
@@ -169,7 +169,7 @@ void displayAllStudents(List head)
 // If no student with the given ID is found, it displays a not found message
 void searchByStudentId(List head, int id)
 {
-    Node *walker = head;
+    NodePtr walker = head;
     while (walker != NULL)
     {
         if (walker->data.id == id)
@@ -194,8 +194,8 @@ void promoteYearLevel(List *head)
     int promoted = 0;
     int removed = 0;
 
-    Node *current = *head;
-    Node *prev = NULL;
+    NodePtr current = *head;
+    NodePtr prev = NULL;
 
     while (current != NULL)
     {
@@ -206,7 +206,7 @@ void promoteYearLevel(List *head)
             else
                 prev->next = current->next;
 
-            Node *temp = current;
+            NodePtr temp = current;
             current = current->next;
             free(temp);
             removed++;
@@ -229,7 +229,7 @@ void computeAverageGpa(List head)
     float totalGpa = 0.0;
     int count = 0;
 
-    Node *walker = head;
+    NodePtr walker = head;
     while (walker != NULL)
     {
         totalGpa += walker->data.gpa;
@@ -251,10 +251,10 @@ void computeAverageGpa(List head)
 void displayTopNStudents(List head, int n)
 {
     int studentCount = countStudents(head);
-    Node *nodes[studentCount];
+    NodePtr nodes[studentCount];
     int index = 0;
 
-    Node *walker = head;
+    NodePtr walker = head;
     while (walker != NULL)
     {
         nodes[index++] = walker;
@@ -267,7 +267,7 @@ void displayTopNStudents(List head, int n)
         for (j = 0; j < index - i - 1; j++)
             if (nodes[j]->data.gpa < nodes[j + 1]->data.gpa)
             {
-                Node *temp = nodes[j];
+                NodePtr temp = nodes[j];
                 nodes[j] = nodes[j + 1];
                 nodes[j + 1] = temp;
             }
@@ -281,9 +281,9 @@ void displayTopNStudents(List head, int n)
 
 void reverseList(List *head)
 {
-    Node *prev = NULL;
-    Node *current = *head;
-    Node *next = NULL;
+    NodePtr prev = NULL;
+    NodePtr current = *head;
+    NodePtr next = NULL;
 
     while (current != NULL)
     {
@@ -294,6 +294,148 @@ void reverseList(List *head)
     }
 
     *head = prev;
+}
+
+void deleteByStudentId(List *head, int id)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty. No student to delete.\n");
+        return;
+    }
+
+    NodePtr current = *head;
+    NodePtr prev = NULL;
+
+    while (current != NULL)
+    {
+        if (current->data.id == id)
+        {
+            if (prev == NULL)
+                *head = current->next;
+            else
+                prev->next = current->next;
+
+            printf("Student with ID %d (%s) deleted successfully.\n", current->data.id, current->data.name);
+            free(current);
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    printf("Student with ID %d not found.\n", id);
+}
+
+void deleteByGpaBelow(List *head, float threshold)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty.\n");
+        return;
+    }
+
+    int removed = 0;
+    NodePtr current = *head;
+    NodePtr prev = NULL;
+
+    while (current != NULL)
+    {
+        if (current->data.gpa < threshold)
+        {
+            NodePtr temp = current;
+            if (prev == NULL)
+                *head = current->next;
+            else
+                prev->next = current->next;
+
+            current = current->next;
+            free(temp);
+            removed++;
+        }
+        else
+        {
+            prev = current;
+            current = current->next;
+        }
+    }
+
+    printf("Students with GPA below %.2f removed: %d\n", threshold, removed);
+}
+
+void deleteByYearLevel(List *head, int yearLevel)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty.\n");
+        return;
+    }
+
+    int removed = 0;
+    NodePtr current = *head;
+    NodePtr prev = NULL;
+
+    while (current != NULL)
+    {
+        if (current->data.yearLevel == yearLevel)
+        {
+            NodePtr temp = current;
+            if (prev == NULL)
+                *head = current->next;
+            else
+                prev->next = current->next;
+
+            current = current->next;
+            free(temp);
+            removed++;
+        }
+        else
+        {
+            prev = current;
+            current = current->next;
+        }
+    }
+
+    printf("Students in Year Level %d removed: %d\n", yearLevel, removed);
+}
+
+void deleteDuplicateGpa(List *head)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty.\n");
+        return;
+    }
+
+    int removed = 0;
+    NodePtr outer = *head;
+
+    while (outer != NULL)
+    {
+        NodePtr inner = outer->next;
+        NodePtr prev = outer;
+
+        while (inner != NULL)
+        {
+            if (inner->data.gpa == outer->data.gpa)
+            {
+                NodePtr temp = inner;
+                prev->next = inner->next;
+                inner = inner->next;
+                free(temp);
+                removed++;
+            }
+            else
+            {
+                prev = inner;
+                inner = inner->next;
+            }
+        }
+
+        outer = outer->next;
+    }
+
+    printf("Duplicate GPA records removed: %d\n", removed);
 }
 
 void fillList(List *head)
@@ -316,13 +458,13 @@ void fillList(List *head)
     int i;
     for (i = 0; i < n; i++)
     {
-        Node *newNode = createNode(students[i]);
+        NodePtr newNode = createNode(students[i]);
 
         if (*head == NULL)
             *head = newNode;
         else
         {
-            Node *walker = *head;
+            NodePtr walker = *head;
             while (walker->next != NULL)
                 walker = walker->next;
             walker->next = newNode;

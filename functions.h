@@ -18,6 +18,11 @@ void computeAverageGpa(List head);
 void displayTopNStudents(List head, int n);
 void reverseList(List *head);
 
+void deleteByStudentId(List *head, int id);
+void deleteByGpaBelow(List *head, float threshold);
+void deleteByYearLevel(List *head, int yearLevel);
+void deleteDuplicateGpa(List *head);
+
 void fillList(List *head);
 
 #endif

@@ -1,7 +1,8 @@
 #ifndef struct_h
 #define struct_h
 
-typedef struct Student{
+typedef struct Student
+{
 	int id;
 	char name[100];
 	char program[100];
@@ -9,11 +10,13 @@ typedef struct Student{
 	float gpa;
 } Student;
 
-typedef struct Node{
+typedef struct Node
+{
 	Student data;
-	struct Node* next;
+	struct Node *next;
 } Node;
 
-typedef Node* List;
+typedef Node *List;
+typedef Node *NodePtr;
 
 #endif
