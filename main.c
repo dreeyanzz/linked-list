@@ -147,7 +147,11 @@ int main()
 			scanf("%d", &id);
 			fflush(stdin);
 
-			searchByStudentId(list, id);
+			int result = searchByStudentId(list, id);
+			if (result)
+				printf("Student ID %d found.\n", result);
+			else
+				printf("Student ID %d does not exist.\n", id);
 		}
 		break;
 
