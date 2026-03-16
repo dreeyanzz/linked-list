@@ -28,8 +28,8 @@ void displayMenu()
 	printf("13. Delete Students with GPA Below Threshold\n");
 	printf("14. Delete Students by Year Level\n");
 	printf("15. Delete Duplicate GPA Records\n");
-	printf("16. Fill List with Sample Data\n");
-	printf("17. Exit\n");
+//	printf("16. Fill List with Sample Data\n");
+	printf("16. Exit\n");
 }
 
 Student createStudent()
@@ -255,14 +255,14 @@ int main()
 		}
 		break;
 
-		case 16:
-		{
-			list = fillList(list);
-			pause();
-		}
-		break;
+//		case 16:
+//		{
+//			list = fillList(list);
+//			pause();
+//		}
+//		break;
 
-		case 17:
+		case 16:
 		{
 			printf("[--] Goodbye!\n");
 			exit(0);

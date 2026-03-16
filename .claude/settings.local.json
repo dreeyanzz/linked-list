@@ -7,7 +7,22 @@
       "Bash(\"$GCC\" -Wall -o test_runner test_new_functions.c functions.c struct.c)",
       "Bash(./test_runner.exe)",
       "Bash(\"$GCC\" -Wall -o linked-list main.c functions.c struct.c)",
-      "Bash(\"$GCC\" -Wall -o test_runner test.c functions.c struct.c)"
+      "Bash(\"$GCC\" -Wall -o test_runner test.c functions.c struct.c)",
+      "Bash(gcc -Wall -o linked-list-test main.c functions.c)",
+      "Bash(where gcc)",
+      "Bash(where cc)",
+      "Bash(where cl)",
+      "Bash(dir \"C:\\\\Program Files\\\\CodeBlocks\\\\MinGW\\\\bin\\\\gcc.exe\")",
+      "Bash(dir \"C:\\\\MinGW\\\\bin\\\\gcc.exe\")",
+      "Bash(dir \"C:\\\\Program Files\\\\CodeBlocks\\\\MinGW\\\\bin\"\")",
+      "Bash(findstr /i gcc)",
+      "Bash(dir \"C:\\\\Program Files \\(x86\\)\\\\CodeBlocks\\\\MinGW\\\\bin\"\" 2>nul && echo \"found x86\" || echo \"not found \")",
+      "Bash(echo \"$PATH\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Dev-Cpp/MinGW64/bin/gcc.exe\" -Wall -o linked-list-test main.c functions.c)",
+      "Bash(printf \"16\\\\n\\\\n5\\\\n\\\\n17\\\\n\")",
+      "Bash(./linked-list-test.exe)",
+      "Bash(\"/c/Program Files \\(x86\\)/Dev-Cpp/MinGW64/bin/gcc.exe\" -Wall -o build_check main.c functions.c)",
+      "Bash(rm -f build_check.exe)"
     ]
   }
 }
